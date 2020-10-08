@@ -7,11 +7,10 @@ import ImagePopup from './ImagePopup.js';
 
 function App() {
 
-const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
-const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
-const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
-const [selectedCard, setSelectedCard] = React.useState(false);
-const [card, setCard] = React.useState([]);
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({});
 
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
@@ -29,15 +28,12 @@ const [card, setCard] = React.useState([]);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
-    setSelectedCard(false);
+    setSelectedCard(0);
   }
 
   function handleCardClick(card) {
-    setCard(card);
-    setSelectedCard(true);
+    setSelectedCard(card);
   }
-
-  
 
   return (
     <div className="App">
@@ -119,7 +115,6 @@ const [card, setCard] = React.useState([]);
           onClose={closeAllPopups}
         />
         <ImagePopup 
-          isCard={card}
           card={selectedCard}
           onClose={closeAllPopups}
         />
