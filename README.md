@@ -1,4 +1,4 @@
-https://nikita-galushkin.github.io/mesto-react
+https://nikita-galushkin.github.io/mesto-react/
 
 
 
