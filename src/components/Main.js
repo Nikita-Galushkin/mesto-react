@@ -3,31 +3,27 @@ import api from '../utils/api.js';
 import Card from './Card.js';
 
 function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
-  const [userName, setUserName] = React.useState();
-  const [userDescription, setUserDescription] = React.useState();
-  const [userAvatar, setUserAvatar] = React.useState();
+  const [userName, setUserName] = React.useState('');
+  const [userDescription, setUserDescription] = React.useState('');
+  const [userAvatar, setUserAvatar] = React.useState('');
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
-    api.getUserInfo()
-    .then((info) => {
-      setUserName(info.name);
-      setUserDescription(info.about);
-      setUserAvatar(info.avatar);
-    });
-  }, []);
+    Promise.all([ api.getUserInfo(), api.getInitialsCards() ])
+      .then(([ info, data ]) => {
+        setUserName(info.name);
+        setUserDescription(info.about);
+        setUserAvatar(info.avatar);
 
-  React.useEffect(() => {
-    api.getInitialsCards()
-    .then((data) => {
-      const card = data.map((el) => ({
-        title: el.name,
-        src: el.link,
-        likes: el.likes,
-        id: el._id
-      })) 
-      setCards(card)
-    });
+        const card = data.map((el) => ({
+          title: el.name,
+          src: el.link,
+          likes: el.likes,
+          id: el._id
+        })) 
+        setCards(card)
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   return (
