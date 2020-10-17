@@ -79,21 +79,33 @@ class Api {
     });
   }
 
-  addLikeCard(cardId) {
-    return fetch(`${this._baseUrl}cards/likes/${cardId}`, {
-      method: 'PUT',
-      headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
-    });
-  }
+  // addLikeCard(cardId) {
+  //   return fetch(`${this._baseUrl}cards/likes/${cardId}`, {
+  //     method: 'PUT',
+  //     headers: this._headers,
+  //   }).then((res) => {
+  //     if (res.ok) {
+  //       return res.json();
+  //     }
+  //     return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
+  //   });
+  // }
 
-  removeLikeCard(cardId) {
+  // removeLikeCard(cardId) {
+  //   return fetch(`${this._baseUrl}cards/likes/${cardId}`, {
+  //     method: 'DELETE',
+  //     headers: this._headers,
+  //   }).then((res) => {
+  //     if (res.ok) {
+  //       return res.json();
+  //     }
+  //     return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
+  //   });
+  // }
+
+  changeLikeCardStatus(cardId, status) {
     return fetch(`${this._baseUrl}cards/likes/${cardId}`, {
-      method: 'DELETE',
+      method: (status) ? 'PUT' : 'DELETE',
       headers: this._headers,
     }).then((res) => {
       if (res.ok) {
