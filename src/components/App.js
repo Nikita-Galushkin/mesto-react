@@ -51,56 +51,48 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-function handleUpdateAvatar(link) {
-  api.setUserAvatar(link)
-      .then((link) => {
-        setCurrentUser(link);
+  function handleUpdateAvatar(link) {
+    api.setUserAvatar(link)
+        .then((link) => {
+          setCurrentUser(link);
+          closeAllPopups();
+        })
+        .catch((err) => console.log(err));
+  }
+
+  function handleCardLike(card) {
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    api.changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        const newCards = cards.map((c) => c._id === card._id ? newCard : c);
+        setCards(newCards);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function handleCardDelete(card) {
+    api.removeCard(card._id)
+      .then(() => {
+        const newArrCards = cards.filter(element => element !== card);
+        setCards(newArrCards);
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function handleAddPlaceSubmit(card) {
+    api.postCard(card)
+      .then((card) => {
+        setCards([...cards, card]);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
-}
-
-function handleCardLike(card) {
-  const isLiked = card.likes.some(i => i._id === currentUser._id);
-  api.changeLikeCardStatus(card._id, !isLiked)
-    .then((newCard) => {
-      const newCards = cards.map((c) => c._id === card._id ? newCard : c);
-      setCards(newCards);
-    })
-    .catch((err) => console.log(err));
-}
-
-function handleCardDelete(card) {
-  api.removeCard(card._id)
-    .then(() => {
-      const newArrCards = cards.filter(element => element !== card);
-      setCards(newArrCards);
-    })
-    .catch((err) => console.log(err));
-}
-
-function handleAddPlaceSubmit(card) {
-  api.postCard(card)
-    .then((card) => {
-      setCards([...cards, card]);
-      closeAllPopups();
-    })
-    .catch((err) => console.log(err));
-
-}
-
-React.useEffect(() => {
-  api.getInitialsCards()
-    .then((data) => {
-      setCards(data)
-    })
-    .catch((err) => console.log(err));
-}, []);
+  }
 
   React.useEffect(() => {
-    api.getUserInfo()
-      .then((info) => {
+    Promise.all([ api.getUserInfo(), api.getInitialsCards() ])
+      .then(([ info, data ]) => {
         setCurrentUser(info);
+        setCards(data);
       })
       .catch((err) => console.log(err));
   }, []);
