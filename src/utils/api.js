@@ -28,7 +28,7 @@ class Api {
     });
   }
 
-  patchUserInfo(info) {
+  setUserInfo(info) {
     return fetch(`${this._baseUrl}users/me`, {
       method: 'PATCH',
       headers: this._headers,
@@ -41,7 +41,7 @@ class Api {
     });
   }
 
-  patchUserAvatar(link) {
+  setUserAvatar(link) {
     return fetch(`${this._baseUrl}users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
@@ -78,30 +78,6 @@ class Api {
       return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
     });
   }
-
-  // addLikeCard(cardId) {
-  //   return fetch(`${this._baseUrl}cards/likes/${cardId}`, {
-  //     method: 'PUT',
-  //     headers: this._headers,
-  //   }).then((res) => {
-  //     if (res.ok) {
-  //       return res.json();
-  //     }
-  //     return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
-  //   });
-  // }
-
-  // removeLikeCard(cardId) {
-  //   return fetch(`${this._baseUrl}cards/likes/${cardId}`, {
-  //     method: 'DELETE',
-  //     headers: this._headers,
-  //   }).then((res) => {
-  //     if (res.ok) {
-  //       return res.json();
-  //     }
-  //     return Promise.reject(`Ошибка: ${res.status} - ${res.statusText}`);
-  //   });
-  // }
 
   changeLikeCardStatus(cardId, status) {
     return fetch(`${this._baseUrl}cards/likes/${cardId}`, {

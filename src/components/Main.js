@@ -1,41 +1,9 @@
 import React from 'react';
-import api from '../utils/api.js';
 import Card from './Card.js';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
 
-function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
+function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick, cards, onCardLike, onCardDelete }) {
   const currentUser = React.useContext(CurrentUserContext);
-  const [cards, setCards] = React.useState([]);
-
-  React.useEffect(() => {
-    api.getInitialsCards()
-      .then((data) => {
-        const card = data.map((el) => ({
-          title: el.name,
-          src: el.link,
-          likes: el.likes,
-          id: el._id,
-          owner: el.owner
-        })) 
-        setCards(card)
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
-    api.changeLikeCardStatus(card._id, !isLiked)
-      .then((newCard) => {
-
-        
-        console.log(newCard);
-        console.log(cards);
-        
-        const newCards = cards.map((c) => c._id === card._id ? newCard : c);
-        setCards(newCards);
-      })
-      .catch((err) => console.log(err));
-  } 
 
   return (
     <main className="content page__content">
@@ -57,12 +25,13 @@ function Main({ onEditAvatar, onEditProfile, onAddPlace, onCardClick }) {
       </section>
       <section className="elements section content__section">
         <ul className="elements__list">
-          {cards.map((card) =>
+          {cards && cards.map((card) =>
             <Card 
-              key={card.id} 
+              key={card._id} 
               card={card} 
               onCardClick={onCardClick}
-              onCardLike={handleCardLike}
+              onCardLike={onCardLike}
+              onCardDelete={onCardDelete}
             />
           )}
         </ul>
